@@ -21,4 +21,11 @@ describe World do
     @empty_world.tick
     @empty_world.empty?(-> { mock.message })
   end
+
+  it 'an empty world is no longer empty after adding a cell' do
+    location_of_cell = double
+    mock = double
+    @empty_world.set_living_at(location_of_cell)
+    @empty_world.empty?(-> { mock.message })
+  end
 end

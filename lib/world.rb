@@ -4,11 +4,23 @@ class World
   end
 
   def empty?(if_empty)
-    if_empty.call
+    if @cells.size.zero?
+      if_empty.call
+    end
+    self
+  end
+
+  def set_living_at(location)
+    @cells << location
     self
   end
 
   def tick
     self
+  end
+
+  private
+  def initialize
+    @cells = []
   end
 end
