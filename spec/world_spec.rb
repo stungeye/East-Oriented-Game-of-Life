@@ -5,7 +5,7 @@ describe World do
     @world = World.new
   end
 
-  it "should correct initialize as a World" do
+  it "should correctly initialize as a World" do
     expect(@world.class).to eq(World)
   end
 
