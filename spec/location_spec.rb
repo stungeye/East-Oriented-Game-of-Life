@@ -5,7 +5,7 @@ describe Location do
     @location = Location.new
   end
 
-  it "should correctly initialize as a Location" do
+  it 'should correctly initialize as a Location' do
     expect(@location.class).to eq(Location)
   end
 end
