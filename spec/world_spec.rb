@@ -10,22 +10,23 @@ describe World do
   end
 
   it 'should be empty when first initialized' do
-    mock = double
-    expect(mock).to receive(:message)
-    @empty_world.empty?(-> { mock.message })
+    world_is_empty = false
+    @empty_world.empty?(-> { world_is_empty = true })
+    expect(world_is_empty).to eq(true)
   end
 
   it 'an empty world should remain empty after one tick' do
-    mock = double
-    expect(mock).to receive(:message)
+    world_is_empty = false
     @empty_world.tick
-    @empty_world.empty?(-> { mock.message })
+    @empty_world.empty?(-> { world_is_empty = true })
+    expect(world_is_empty).to eq(true)
   end
 
   it 'an empty world is no longer empty after adding a cell' do
     location_of_cell = double
-    mock = double
+    world_is_empty = false
     @empty_world.set_living_at(location_of_cell)
-    @empty_world.empty?(-> { mock.message })
+    @empty_world.empty?(-> { world_is_empty = true })
+    expect(world_is_empty).to eq(false)
   end
 end
