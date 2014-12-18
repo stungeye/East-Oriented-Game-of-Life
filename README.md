@@ -29,6 +29,8 @@ But this felt really awkward, so I switched to using a plain old variable:
       @empty_world.empty?(-> { world_is_empty = true })
       expect(world_is_empty).to be true
     end
+    
+Spent a bit too much time thinking about how to hide the World's "dimensionality" from itself. As in, I don't think the world should need to know if it's 1D, 2D or 3D. That information should be hidden inside of Location. The World itself should just know that it has Locations, each of which may contain a live or dead cell. I've finally decided on a new WorldBuilder2D class, that will populate a World with it's locations.
 
 # (UN)LICENSE
 
