@@ -1,3 +1,5 @@
+require 'set'
+
 class World
   def self.empty
     new
@@ -21,6 +23,6 @@ class World
 
   private
   def initialize
-    @cells = []
+    @cells = Set.new
   end
 end
