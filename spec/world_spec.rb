@@ -12,14 +12,14 @@ describe World do
   it 'should be empty when first initialized' do
     world_is_empty = false
     @empty_world.empty?(-> { world_is_empty = true })
-    expect(world_is_empty).to eq(true)
+    expect(world_is_empty).to be true
   end
 
   it 'an empty world should remain empty after one tick' do
     world_is_empty = false
     @empty_world.tick
     @empty_world.empty?(-> { world_is_empty = true })
-    expect(world_is_empty).to eq(true)
+    expect(world_is_empty).to be true
   end
 
   it 'an empty world is no longer empty after adding a cell' do
@@ -27,6 +27,6 @@ describe World do
     world_is_empty = false
     @empty_world.set_living_at(location_of_cell)
     @empty_world.empty?(-> { world_is_empty = true })
-    expect(world_is_empty).to eq(false)
+    expect(world_is_empty).to be false
   end
 end
