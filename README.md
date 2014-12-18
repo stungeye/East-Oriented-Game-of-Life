@@ -10,7 +10,7 @@ In other words: [Tell, Don't Ask](http://c2.com/cgi/wiki?TellDontAsk) -or- Comma
 
 # Development Journal
 
-I started coding using some of the guidelines from [Understanding the Four Simple Rules of Design](https://leanpub.com/4rulesofsimpledesignhttps://leanpub.com/4rulesofsimpledesign) by [Corey Haines](https://twitter.com/coreyhaines).
+I started coding using some of the guidelines from [Understanding the Four Simple Rules of Design](https://leanpub.com/4rulesofsimpledesign) by [Corey Haines](https://twitter.com/coreyhaines).
 
 The first tests I wrote focused on the World class's `#empty?` method. Since the method cannot return a boolean, it takes a lambda as an argument. This lambda is only executed by `#empty?` if the world is indeed empty. I initially tried to test this using a mock object:
 
