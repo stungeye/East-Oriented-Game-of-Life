@@ -6,13 +6,11 @@ class World
   end
 
   def empty?(if_empty)
-    if @cells.size.zero?
-      if_empty.call
-    end
+    if_empty.call  if @cells.size.zero?
     self
   end
 
-  def set_living_at(location)
+  def alive_at(location)
     @cells << location
     self
   end
@@ -22,6 +20,7 @@ class World
   end
 
   private
+
   def initialize
     @cells = Set.new
   end

@@ -26,7 +26,7 @@ describe World do
     it 'should no longer be empty after adding a cell' do
       location_of_cell = double
       world_is_empty = false
-      @world.set_living_at(location_of_cell)
+      @world.alive_at(location_of_cell)
       @world.empty?(-> { world_is_empty = true })
       expect(world_is_empty).to be false
     end
@@ -35,7 +35,7 @@ describe World do
   context 'A World of Lonely cells' do
     before(:each) do
       @world = World.empty
-      @world.set_living_at(double)
+      @world.alive_at(double)
     end
 
     it 'a world with only lonely cells becomes empty after one tick' do
