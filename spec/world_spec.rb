@@ -39,6 +39,7 @@ describe World do
     end
 
     it 'a world with only lonely cells becomes empty after one tick' do
+      pending "Need a WorldBuilder class first."
       world_is_empty = false
       @world.tick
       @world.empty?(-> { world_is_empty = true })
