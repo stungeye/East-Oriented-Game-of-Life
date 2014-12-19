@@ -7,10 +7,10 @@ describe WorldBuilder do
       WorldBuilder.build_2d_world(world)
     end
     
-    it 'should add one location when provided a data for a 1x1 world' do
+    it 'should add one alive cell when provided a data for a 1x1 world' do
       world = double
       expect(world).to receive(:alive_location)
-      WorldBuilder.build_2d_world(world, [[1]])
+      WorldBuilder.build_2d_world(world, [[double]])
     end 
   end
 end
