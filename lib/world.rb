@@ -6,12 +6,12 @@ class World
   end
 
   def empty?(if_empty)
-    if_empty.call  if @cells.size.zero?
+    if_empty.call  if @locations.size.zero?
     self
   end
 
-  def alive_at(location)
-    @cells << location
+  def add_location(location)
+    @locations << location
     self
   end
 
@@ -22,6 +22,6 @@ class World
   private
 
   def initialize
-    @cells = Set.new
+    @locations = Set.new
   end
 end
