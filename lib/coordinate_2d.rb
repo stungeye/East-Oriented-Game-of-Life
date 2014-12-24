@@ -8,16 +8,18 @@ class Coordinate2D
     other.same_xy?(@x, @y)
   end
 
-  def same_xy?(x, y)
-    @x == x && @y == y
+  def neighbour?(other)
+    other.neighbour_xy?(@x, @y)
   end
 
   def self.random(bounds = 10)
     new(rand(bounds), rand(bounds))
   end
 
-  def neighbour?(other)
-    other.neighbour_xy?(@x, @y)
+  protected
+
+  def same_xy?(x, y)
+    @x == x && @y == y
   end
 
   def neighbour_xy?(x, y)
