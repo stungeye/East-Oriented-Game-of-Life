@@ -8,8 +8,8 @@ class World
     self
   end
 
-  def add_location(location)
-    @locations << location
+  def add_location(new_location)
+    @locations << new_location
     self
   end
 
