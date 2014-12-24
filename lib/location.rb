@@ -1,18 +1,32 @@
 class Location
+  def initialize(coordinate)
+    @coordinate = coordinate
+  end
+
+  def same_position?(other)
+    other.same_coordinate?(@coordinate)
+  end
+
+  def same_coordinate?(other_coordinate)
+    @coordinate == other_coordinate
+  end
+end
+
+class Coordinate2D
   def initialize(x, y)
     @x = x
     @y = y
   end
 
-  def same_position?(other_location, if_same_position)
-    other_location.same_coordinates?(@x, @y, if_same_position)
+  def ==(other)
+    other.same_xy?(@x, @y)
   end
 
-  def same_coordinates?(x, y, if_same_coordinates)
-    if_same_coordinates.call  if @x == x && @y == y
+  def same_xy?(x, y)
+    @x == x && @y == y
   end
 
-  def self.random
-    new(random(10), random(10))
+  def self.random(bounds = 10)
+    new(rand(bounds), rand(bounds))
   end
 end

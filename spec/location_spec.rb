@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Location do
   before(:each) do
-    @location = Location.new(double(:x), double(:y))
+    @location = Location.new(double(:coordinate))
   end
 
   it 'should correctly initialize as a Location' do
@@ -11,21 +11,16 @@ describe Location do
 
   context '#same_position?' do
     it 'should recognize locations which share an identical position' do
-      first_location = Location.new(1, 2)
-      second_location = Location.new(1, 2)
-      same_position = false
-      first_location.same_position?(second_location,
-                                    -> { same_position = true })
-      expect(same_position).to be true
+      coordinate = Coordinate2D.random
+      first_location = Location.new(coordinate)
+      second_location = Location.new(coordinate)
+      expect(first_location.same_position?(second_location)).to be true
     end
 
     it 'should recognize locations which not not share an identical position' do
-      first_location = Location.new(1, 2)
-      second_location = Location.new(2, 3)
-      same_position = false
-      first_location.same_position?(second_location,
-                                    -> { same_position = true })
-      expect(same_position).to be false
+      first_location = Location.new(Coordinate2D.new(1, 2))
+      second_location = Location.new(Coordinate2D.new(2, 3))
+      expect(first_location.same_position?(second_location)).to be false
     end
   end
 end
