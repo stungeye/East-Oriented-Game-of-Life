@@ -10,6 +10,8 @@ In other words: [Tell, Don't Ask](http://c2.com/cgi/wiki?TellDontAsk) -or- Comma
 
 # Development Journal
 
+*December 18, 2014*
+
 I started coding using some of the guidelines from [Understanding the Four Simple Rules of Design](https://leanpub.com/4rulesofsimpledesign) by [Corey Haines](https://twitter.com/coreyhaines).
 
 The first tests I wrote focused on `World#empty?`. Since the method cannot return a boolean, it takes a lambda as an argument. This lambda is only executed by `#empty?` if the world is indeed empty. I initially tried to test this using a mock object:
@@ -31,6 +33,14 @@ But this felt really awkward, so I switched to using a plain old variable:
     end
     
 Spent a bit too much time thinking about how to hide the World's "dimensionality" from itself. As in, I don't think the world should need to know if it's 1D, 2D or 3D. That information should be hidden inside of Location. The World itself should just know that it has Locations, each of which may contain a live or dead cell. I've finally decided on a new WorldBuilder2D class, that will populate a World with it's locations.
+
+*December 24, 2014*
+
+Took some time to implement a position equality test on Location, #same_position?. The goal being I was going to add a spec for World#add_location to expect identical locations to be added only once. The problem is, I don't know how to test for that without implementing World#size, which would break the no returns rule. 
+
+It should also be noted that not being able to return simple Booleans, as in the case of World#empty? and Location#same_position?, is grating. Building with a lambda argument that gets conditionally called feels awkward. In some descriptions of east-oriented coded boolean returns are allowed. Perhaps needing boolean methods is an east-oriented code smell? I'm going to start allowing boolean methods, otherwise I'll be forever mired in chains of conditional callbacks.
+
+Extracted the x and y instance variables out of Location into a Coordinate2D class. This class will be responsible for knowing it's neighbours.
 
 # (UN)LICENSE
 
