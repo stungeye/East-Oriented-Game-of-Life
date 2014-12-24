@@ -19,4 +19,12 @@ describe Coordinate2D do
       expect(first == second).to be false
     end
   end
+
+  context '#neighbour?' do
+    it 'should recognize its neighbours' do
+      coordinate = Coordinate2D.new(0, 0)
+      neighbour  = Coordinate2D.new(0, 1)
+      expect(coordinate.neighbour?(neighbour)).to be true
+    end
+  end
 end
