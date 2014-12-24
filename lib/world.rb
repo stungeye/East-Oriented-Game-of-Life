@@ -1,5 +1,3 @@
-require 'set'
-
 class World
   def self.empty
     new
@@ -22,6 +20,6 @@ class World
   private
 
   def initialize
-    @locations = Set.new
+    @locations = []
   end
 end

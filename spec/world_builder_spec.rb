@@ -5,6 +5,7 @@ describe WorldBuilder do
     it 'should not add any locations to a world when given no data' do
       world = double
       WorldBuilder.build_2d_world(world)
+      expect(world).not_to receive(:add_loctaion)
     end
 
     it 'should add one location when provided a data for a 1x1 world' do
