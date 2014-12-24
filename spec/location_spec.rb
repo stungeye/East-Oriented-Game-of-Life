@@ -16,11 +16,5 @@ describe Location do
       second_location = Location.new(coordinate)
       expect(first_location.same_position?(second_location)).to be true
     end
-
-    it 'should recognize locations which not not share an identical position' do
-      first_location = Location.new(Coordinate2D.new(1, 2))
-      second_location = Location.new(Coordinate2D.new(2, 3))
-      expect(first_location.same_position?(second_location)).to be false
-    end
   end
 end
