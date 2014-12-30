@@ -26,5 +26,17 @@ describe Coordinate2D do
       neighbour  = Coordinate2D.new(0, 1)
       expect(coordinate.neighbour?(neighbour)).to be true
     end
+
+    it 'should recognize that identical coordinates are not neighbours' do
+      first  = Coordinate2D.new(1, 1)
+      second = Coordinate2D.new(1, 1)
+      expect(first.neighbour?(second)).to be false
+    end
+
+    it 'should recognize that distant coordinates are not neighbours' do
+      first  = Coordinate2D.new(0, 0)
+      second = Coordinate2D.new(0, 2)
+      expect(first.neighbour?(second)).to be false
+    end
   end
 end
