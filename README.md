@@ -42,6 +42,10 @@ It should also be noted that not being able to return simple Booleans, as in the
 
 Extracted the x and y instance variables out of Location into a Coordinate2D class. This class will be responsible for knowing it's neighbours.
 
+*December 26, 2014*
+
+It's amazing how this style of programming makes me feel like I've forgotten how to code. I'm sure I could hack together a procedural Game of Life in less than an hour, but I'm not sure how many hours it would take to complete this version. This is partially because I'm learning two things at the same time here: TDD and East-Oriented OO. It should also be noted that I'm not doing TDD right. The tests are actually driving my code. Instead the tests have allowed me to discover the objects I need, but then I guess at the message they need to respond to, leading me to create unnecessary methods. Current status: Frustrated. ;)
+
 # (UN)LICENSE
 
 This is free and unencumbered software released into the public domain. See UNLICENSE for details.
