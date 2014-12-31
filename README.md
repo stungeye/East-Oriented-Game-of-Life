@@ -36,9 +36,9 @@ Spent a bit too much time thinking about how to hide the World's "dimensionality
 
 *December 24, 2014*
 
-Took some time to implement a position equality test on Location, #same_position?. The goal being I was going to add a spec for World#add_location to expect identical locations to be added only once. The problem is, I don't know how to test for that without implementing World#size, which would break the no returns rule. 
+Took some time to implement a position equality test on Location, `#same_position?`. The goal being I was going to add a spec for `World#add_location` to expect identical locations to be added only once. The problem is, I don't know how to test for that without implementing `World#size`, which would break the no returns rule. 
 
-It should also be noted that not being able to return simple Booleans, as in the case of World#empty? and Location#same_position?, is grating. Building with a lambda argument that gets conditionally called feels awkward. In some descriptions of east-oriented coded boolean returns are allowed. Perhaps needing boolean methods is an east-oriented code smell? I'm going to start allowing boolean methods, otherwise I'll be forever mired in chains of conditional callbacks.
+It should also be noted that not being able to return simple Booleans, as in the case of `World#empty?` and `Location#same_position?`, is grating. Building with a lambda argument that gets conditionally called feels awkward. In some descriptions of east-oriented coded boolean returns are allowed. Perhaps needing boolean methods is an east-oriented code smell? I'm going to start allowing boolean methods, otherwise I'll be forever mired in chains of conditional callbacks.
 
 Extracted the x and y instance variables out of Location into a Coordinate2D class. This class will be responsible for knowing it's neighbours.
 
@@ -49,6 +49,10 @@ It's amazing how this style of programming makes me feel like I've forgotten how
 *December 31, 2014*
 
 A new beginning. I've deleted all the code and am starting again. I've tagged the [final state of the first attempt](https://github.com/stungeye/East-Oriented-Game-of-Life/tree/before_restart). To get a better feel for the East-Oriented style I'm going to base this attempt on [Jake Goulding's code found here](https://github.com/shepmaster/gdcr-no-return-values) and [blogged about here](http://jakegoulding.com/blog/2012/12/13/conways-game-of-life-without-return-values/). Once I get a feel for how this code works I will refactor it such that the rules don't leak into the Board class. I'd also like to replace the [x,y] representation of a point with a Location or Coordinate [Value Object](http://martinfowler.com/bliki/ValueObject.html). Value Objects are not East Oriented, but I think they would be an interesting addition here. For example, I might be able to create 1D, 2D and 3D Coordinate Value Objects that change the nature of the game without having to rewrite any other parts of the system.
+
+I've taken a slightly different testing approach than Jake while re-implementing his version of the Game of Life. Jake only has tests for the Game class, with all of them depending on expectations of ui output. I'll be adding specs for other classes, starting with Board. To facilitate this I've modified Game such that it is initialized with an existing Board, rather than having the only instance of Board exist within a Game. This should give me the added benefit of being about to create Board factories later on.
+
+Jake's specs focus on calling `Game#come_alive_at` and then expecting ui output for each cell brought to life. My spec for `Game#come_alive_at` only expects that message to be forwarded to the board. My spec for `Board#come_alive_at` depends on the existence of `Board#each_live_cell`, which takes a block and yields each live cell. So if I `#come_alive_at` N times, `#each_live_cell` should yield control N times. Yielding cells like this feels a little Easty, but it's still not a query. The block passed to `Board#each_live_cell` is called with each cell as an argument.
 
 # (UN)LICENSE
 
