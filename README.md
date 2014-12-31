@@ -46,6 +46,10 @@ Extracted the x and y instance variables out of Location into a Coordinate2D cla
 
 It's amazing how this style of programming makes me feel like I've forgotten how to code. I'm sure I could hack together a procedural Game of Life in less than an hour, but I'm not sure how many hours it would take to complete this version. This is partially because I'm learning two things at the same time here: TDD and East-Oriented OO. It should also be noted that I'm not doing TDD right. The tests are actually driving my code. Instead the tests have allowed me to discover the objects I need, but then I guess at the message they need to respond to, leading me to create unnecessary methods. Current status: Frustrated. ;)
 
+*December 31, 2014*
+
+A new beginning. I've deleted all the code and am starting again. I've tagged the [final state of the first attempt](https://github.com/stungeye/East-Oriented-Game-of-Life/tree/before_restart). To get a better feel for the East-Oriented style I'm going to base this attempt on [Jake Goulding's code found here](https://github.com/shepmaster/gdcr-no-return-values) and [blogged about here](http://jakegoulding.com/blog/2012/12/13/conways-game-of-life-without-return-values/). Once I get a feel for how this code works I will refactor it such that the rules don't leak into the Board class. I'd also like to replace the [x,y] representation of a point with a Location or Coordinate [Value Object](http://martinfowler.com/bliki/ValueObject.html). Value Objects are not East Oriented, but I think they would be an interesting addition here. For example, I might be able to create 1D, 2D and 3D Coordinate Value Objects that change the nature of the game without having to rewrite any other parts of the system.
+
 # (UN)LICENSE
 
 This is free and unencumbered software released into the public domain. See UNLICENSE for details.
