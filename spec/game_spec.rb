@@ -61,3 +61,48 @@ describe Board do
     end
   end
 end
+
+describe ConwayAliveRules do
+  let(:board) { double(:board) }
+  subject(:alive_rules) { ConwayAliveRules.new(board) }
+
+  it 'keeps a cell alive if it has two neighbours' do
+    expect(board).to receive(:come_alive_at).with(1, 1)
+    alive_rules.apply(1, 1, 2)
+  end
+
+  it 'keeps a cell alive if it has three neighbours' do
+    expect(board).to receive(:come_alive_at).with(1, 1)
+    alive_rules.apply(1, 1, 3)
+  end
+
+  it 'does not keep a lonely cell alive' do
+    expect(board).to_not receive(:come_alive_at).with(1, 1)
+    alive_rules.apply(1, 1, 0)
+  end
+
+  it 'does not keep a crowded cell alive' do
+    expect(board).to_not receive(:come_alive_at).with(1, 1)
+    alive_rules.apply(1, 1, 4)
+  end
+end
+
+describe ConwayDeadRules do
+  let(:board) { double(:board) }
+  subject(:dead_rules) { ConwayDeadRules.new(board) }
+
+  it 'brings a cell to life if it has three neighbours' do
+    expect(board).to receive(:come_alive_at).with(1, 1)
+    dead_rules.apply(1, 1, 3)
+  end
+
+  it 'does not bring lonely cell to life' do
+    expect(board).to_not receive(:come_alive_at).with(1, 1)
+    dead_rules.apply(1, 1, 0)
+  end
+
+  it 'does bring a crowded cell to life' do
+    expect(board).to_not receive(:come_alive_at).with(1, 1)
+    dead_rules.apply(1, 1, 4)
+  end
+end
