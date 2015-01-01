@@ -60,6 +60,8 @@ Started by implementing the `Board#points_surrounding` and `Board#fringe` both o
 
 Next I TDD'd the ConwayAliveRules and ConwayDeadRules classes. In Jake's implementation the rules were in rules classes but they also exists in `Board#find_live_cell_neighors` and `Board#find_dead_cell_neighbors`. Now that the rules are tested separately, testing the `Board#next_generation` (called `Board#time_passes` in Jake's implementation) need only verify that the rules are applied, but need not recheck their actual expected effects.
 
+After implementing rules application it looks like the Game class isn't needed. It currently only delegates (either explicitly or via Forwardable) to the board. I'll refactor it away. I'm also going to refactor the Rules classes such that `#apply` becomes a class method to which the board, cell and number of neighbour is passed. No need to instantiate these rules. I'll have to use a class double for testing them now. Once that refactor is complete these rules could be passed into the board on initialization. And then `Board#apply_rules` would only need to take a new Board as an argument. Finally, I'll write an integrate spec to ensure that the conway rule set works with the Board as expected.
+
 # (UN)LICENSE
 
 This is free and unencumbered software released into the public domain. See UNLICENSE for details.
