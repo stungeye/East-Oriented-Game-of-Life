@@ -22,8 +22,7 @@ describe Game do
     end
 
     it 'cells that are brought to life are output to the ui' do
-      pending 'Need to first implement Board#come_alive_at'
-      expect(ui).to receive(:draw_call).with(1, 1)
+      expect(ui).to receive(:draw_cell).with(1, 1)
       game.come_alive_at(1, 1)
       game.output(ui)
     end
@@ -43,10 +42,22 @@ describe Board do
       expect { |b| board.each_live_cell(&b) }.to yield_control.exactly(1).times
     end
 
-    it 'allows a multiple cells to be brought to life' do
+    it 'allows a multiple different cells to be brought to life' do
       board.come_alive_at(1, 1)
       board.come_alive_at(2, 2)
       expect { |b| board.each_live_cell(&b) }.to yield_control.exactly(2).times
+    end
+
+    it 'only allows a specific cell to be added once' do
+      board.come_alive_at(1, 1)
+      board.come_alive_at(1, 1)
+      expect { |b| board.each_live_cell(&b) }.to yield_control.exactly(1).times
+    end
+
+    it 'calculated fringe' do
+      board.come_alive_at(1, 1)
+      board.come_alive_at(1, 2)
+      expect(board.fringe).to eq(Set.new [[1, 0], [0, 1], [2, 1], [0, 2], [2, 2], [1, 3]])
     end
   end
 end

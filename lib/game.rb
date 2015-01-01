@@ -11,6 +11,9 @@ class Game
   def_delegator :@board, :come_alive_at
 
   def output(ui)
+    @board.each_live_cell do |x, y|
+      ui.draw_cell(x, y)
+    end
     self
   end
 end
@@ -34,5 +37,18 @@ class Board
     @cells.each do |cell|
       yield cell
     end
+  end
+
+  def points_surrounding(x, y)
+    [[x, y - 1],
+     [x - 1, y],
+     [x + 1, y],
+     [x, y + 1]].to_set
+  end
+
+  def fringe
+    @cells.inject(Set.new) do |fringe_cells, cell|
+      fringe_cells + points_surrounding(cell[0], cell[1])
+    end - @cells
   end
 end
