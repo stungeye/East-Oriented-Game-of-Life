@@ -10,6 +10,10 @@ class Game
 
   def_delegator :@board, :come_alive_at
 
+  def next_generation(alive_rules, dead_rules)
+    self
+  end
+
   def output(ui)
     @board.each_live_cell do |x, y|
       ui.draw_cell(x, y)
@@ -49,6 +53,12 @@ class Board
     self
   end
 
+  def apply_alive_rules(rules)
+    each_live_cell do |x, y|
+      rules.apply(x, y, alive_neighbour_count(x, y))
+    end
+  end
+
   private
 
   def points_surrounding(x, y)
@@ -62,6 +72,10 @@ class Board
     @cells.inject(Set.new) do |fringe_cells, cell|
       fringe_cells + points_surrounding(cell[0], cell[1])
     end - @cells
+  end
+
+  def alive_neighbour_count(x, y)
+    points_surrounding(x, y).count { |point| @cells.include? point }
   end
 end
 
