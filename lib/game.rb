@@ -10,7 +10,9 @@ class Game
 
   def_delegator :@board, :come_alive_at
 
-  def next_generation(alive_rules, dead_rules)
+  def apply_rules(alive_rules, dead_rules)
+    @board.apply_alive_rules(alive_rules)
+    @board.apply_dead_rules(dead_rules)
     self
   end
 
@@ -57,6 +59,14 @@ class Board
     each_live_cell do |x, y|
       rules.apply(x, y, alive_neighbour_count(x, y))
     end
+    self
+  end
+
+  def apply_dead_rules(rules)
+    each_fringe_cell do |x, y|
+      rules.apply(x, y, alive_neighbour_count(x, y))
+    end
+    self
   end
 
   private

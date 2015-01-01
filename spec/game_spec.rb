@@ -26,6 +26,37 @@ describe Game do
       game.come_alive_at(1, 1)
       game.output(ui)
     end
+
+    it 'applies no alive rules' do
+      alive_rules = double
+      expect(alive_rules).to_not receive(:apply)
+      game.apply_rules(alive_rules, double(:dead_rules))
+    end
+
+    it 'applies no dead rules' do
+      dead_rules = double
+      expect(dead_rules).to_not receive(:apply)
+      game.apply_rules(double(:alive_rules), dead_rules)
+    end
+  end
+
+  context 'with a single live cell' do
+    let(:board) { Board.empty.come_alive_at(1, 1) }
+    subject(:game) { Game.new(board) }
+
+    it 'applies the alive rules once' do
+      alive_rules = double
+      dead_rules  = double.as_null_object
+      expect(alive_rules).to receive(:apply)
+      game.apply_rules(alive_rules, dead_rules)
+    end
+
+    it 'applies the dead rules all neighbouring cells' do
+      dead_rules = double
+      alive_rules = double.as_null_object
+      expect(dead_rules).to receive(:apply).at_least(:once)
+      game.apply_rules(alive_rules, dead_rules)
+    end
   end
 end
 
