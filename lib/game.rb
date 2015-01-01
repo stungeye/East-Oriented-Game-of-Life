@@ -48,22 +48,15 @@ class Board
     self
   end
 
-  def each_fringe_cell
-    fringe.each do |cell|
-      yield cell
-    end
-    self
-  end
-
   def apply_alive_rules(rules)
-    each_live_cell do |x, y|
+    @cells.each do |x, y|
       rules.apply(x, y, alive_neighbour_count(x, y))
     end
     self
   end
 
   def apply_dead_rules(rules)
-    each_fringe_cell do |x, y|
+    fringe.each do |x, y|
       rules.apply(x, y, alive_neighbour_count(x, y))
     end
     self

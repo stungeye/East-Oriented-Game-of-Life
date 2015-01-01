@@ -83,12 +83,6 @@ describe Board do
     board.come_alive_at(1, 1)
     expect { |b| board.each_live_cell(&b) }.to yield_control.exactly(1).times
   end
-
-  it 'can yield the correct number of fringe cells' do
-    board.come_alive_at(1, 1)
-    board.come_alive_at(1, 2)
-    expect { |b| board.each_fringe_cell(&b) }.to yield_control.exactly(6).times
-  end
 end
 
 describe ConwayAliveRules do
