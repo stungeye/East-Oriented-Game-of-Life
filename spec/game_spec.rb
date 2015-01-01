@@ -16,7 +16,7 @@ describe Game do
     let(:board) { Board.empty }
     subject(:game) { Game.new(board) }
 
-    it 'no live cells are ouput to the ui' do
+    it 'outputs nothing to the ui' do
       expect(ui).to have_not_received(:draw_cell)
       game.output(ui)
     end
