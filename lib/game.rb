@@ -27,17 +27,29 @@ class Board
 
   def initialize
     @cells = Set.new
+    self
   end
 
   def come_alive_at(x, y)
     @cells << [x, y]
+    self
   end
 
   def each_live_cell
     @cells.each do |cell|
       yield cell
     end
+    self
   end
+
+  def each_fringe_cell
+    fringe.each do |cell|
+      yield cell
+    end
+    self
+  end
+
+  private
 
   def points_surrounding(x, y)
     [[x, y - 1],

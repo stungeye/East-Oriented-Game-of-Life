@@ -54,10 +54,10 @@ describe Board do
       expect { |b| board.each_live_cell(&b) }.to yield_control.exactly(1).times
     end
 
-    it 'calculated fringe' do
+    it 'can yield the correct number of fringe cells' do
       board.come_alive_at(1, 1)
       board.come_alive_at(1, 2)
-      expect(board.fringe).to eq(Set.new [[1, 0], [0, 1], [2, 1], [0, 2], [2, 2], [1, 3]])
+      expect { |b| board.each_fringe_cell(&b) }.to yield_control.exactly(6).times
     end
   end
 end
