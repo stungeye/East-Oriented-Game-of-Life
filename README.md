@@ -54,6 +54,12 @@ I've taken a slightly different testing approach than Jake while re-implementing
 
 Jake's specs focus on calling `Game#come_alive_at` and then expecting ui output for each cell brought to life. My spec for `Game#come_alive_at` only expects that message to be forwarded to the board. My spec for `Board#come_alive_at` depends on the existence of `Board#each_live_cell`, which takes a block and yields each live cell. So if I call `#come_alive_at` N times, `#each_live_cell` should yield control N times. Yielding cells like this feels a little Easty, but it's still not a query. The block passed to `Board#each_live_cell` is called with each cell as an argument.
 
+*January 1, 2014*
+
+Started by implementing the `Board#points_surrounding` and `Board#fringe` both of which are private so they can return data. I've simplified their implementation by removing the use of `Enummerable#flat_map`. I did a reverse spike here, TDDing these methods and then removing those tests after setting the methods private. The `Board#fringe` is fascinating. In my previous Game of Life implementations I never realized that you only need to check on dead cells that are touching a live cell. Makes sense with respect to the rules, but in past implementations with the board being a 2D array I would just loop through all positions.
+
+Next I TDD'd the ConwayAliveRules and ConwayDeadRules classes. In Jake's implementation the rules were in rules classes but they also exists in `Board#find_live_cell_neighors` and `Board#find_dead_cell_neighbors`. Now that the rules are tested separately, testing the `Board#next_generation` (called `Board#time_passes` in Jake's implementation) need only verify that the rules are applied, but need not recheck their actual expected effects.
+
 # (UN)LICENSE
 
 This is free and unencumbered software released into the public domain. See UNLICENSE for details.
