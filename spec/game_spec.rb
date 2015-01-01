@@ -36,29 +36,27 @@ describe Board do
     expect { |b| board.each_live_cell(&b) }.to_not yield_control
   end
 
-  describe '#come_alive_at' do
-    it 'allows a single cell to be brought to life' do
-      board.come_alive_at(1, 1)
-      expect { |b| board.each_live_cell(&b) }.to yield_control.exactly(1).times
-    end
+  it 'allows a single cell to be brought to life' do
+    board.come_alive_at(1, 1)
+    expect { |b| board.each_live_cell(&b) }.to yield_control.exactly(1).times
+  end
 
-    it 'allows a multiple different cells to be brought to life' do
-      board.come_alive_at(1, 1)
-      board.come_alive_at(2, 2)
-      expect { |b| board.each_live_cell(&b) }.to yield_control.exactly(2).times
-    end
+  it 'allows a multiple different cells to be brought to life' do
+    board.come_alive_at(1, 1)
+    board.come_alive_at(2, 2)
+    expect { |b| board.each_live_cell(&b) }.to yield_control.exactly(2).times
+  end
 
-    it 'only allows a specific cell to be added once' do
-      board.come_alive_at(1, 1)
-      board.come_alive_at(1, 1)
-      expect { |b| board.each_live_cell(&b) }.to yield_control.exactly(1).times
-    end
+  it 'only allows a specific cell to be added once' do
+    board.come_alive_at(1, 1)
+    board.come_alive_at(1, 1)
+    expect { |b| board.each_live_cell(&b) }.to yield_control.exactly(1).times
+  end
 
-    it 'can yield the correct number of fringe cells' do
-      board.come_alive_at(1, 1)
-      board.come_alive_at(1, 2)
-      expect { |b| board.each_fringe_cell(&b) }.to yield_control.exactly(6).times
-    end
+  it 'can yield the correct number of fringe cells' do
+    board.come_alive_at(1, 1)
+    board.come_alive_at(1, 2)
+    expect { |b| board.each_fringe_cell(&b) }.to yield_control.exactly(6).times
   end
 end
 
