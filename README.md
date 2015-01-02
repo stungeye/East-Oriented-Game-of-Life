@@ -62,6 +62,19 @@ Next I TDD'd the ConwayAliveRules and ConwayDeadRules classes. In Jake's impleme
 
 After implementing rule application it looks like the Game class isn't needed. It currently only delegates (either explicitly or via Forwardable) to the board. I'll refactor it away. I'm also going to refactor the Rules classes such that `#apply` becomes a class method to which the board, cell and number of neighbour is passed. No need to instantiate these rules. I'll have to use a class double for testing them now. Once that refactor is complete these rules could be passed into the board on initialization. And then `Board#apply_rules` would only need to take a new Board as an argument. Finally, I'll write an integrate spec to ensure that the conway rule set works with the Board as expected.
 
+*January 2, 2014*
+
+So I refactored away the Game class. The source code line count dropped by 20 lines, with the Board class growing by only four lines. A few things I've noticed:
+
+* Board now has too many responsibilities. I think almost all of Board's private methods could be extracted into two separate classes: A Board factory to handle rule application and a Location value object. Those extraction would leave Board with the single responsibility of managing the Set of cells.
+* Board should likely be renamed World since Board implies a 2D topology and I want to extract out the topology anyway.
+* I'm having a hard time deciding how best to refactor the rules. Currently when generating a new board you have to do the following:
+
+    new_board = Board.empty
+    existing_board.apply_rules(ConwayAliveRules.new(new_board), ConwayDeadRules.new(new_board))
+
+That seems like a lot of ceremony just to generate the next generation board, but I'm not exactly sure how to improve it. One rules class that contains the alive and dead rules? Some sort of rule application Board factory? We'll see. 
+
 # (UN)LICENSE
 
 This is free and unencumbered software released into the public domain. See UNLICENSE for details.
