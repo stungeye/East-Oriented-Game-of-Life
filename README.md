@@ -68,7 +68,8 @@ So I refactored away the Game class. The source code line count dropped by 20 li
 
 * Board now has too many responsibilities. I think almost all of Board's private methods could be extracted into two separate classes: A Board factory to handle rule application and a Location value object. Those extraction would leave Board with the single responsibility of managing the Set of cells.
 * Board should likely be renamed World since Board implies a 2D topology and I want to extract out the topology anyway.
-* I'm having a hard time deciding how best to refactor the rules. Currently when generating a new board you have to do the following:
+
+I'm also having a hard time deciding how best to refactor the rules. Currently when generating a new board you have to do the following:
 
     new_board = Board.empty
     existing_board.apply_rules(ConwayAliveRules.new(new_board), ConwayDeadRules.new(new_board))
