@@ -101,6 +101,7 @@ class UserInterface2D
       end
       puts
     end
+    puts
   end
 
   private
