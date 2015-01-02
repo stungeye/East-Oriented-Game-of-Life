@@ -41,6 +41,19 @@ class Board
     self
   end
 
+  def output(ui)
+    @cells.each do |x, y|
+      ui.draw_cell(x, y)
+    end
+    self
+  end
+
+  def apply_rules(alive_rules, dead_rules)
+    apply_alive_rules(alive_rules)
+    apply_dead_rules(dead_rules)
+    self
+  end
+
   def each_live_cell
     @cells.each do |cell|
       yield cell

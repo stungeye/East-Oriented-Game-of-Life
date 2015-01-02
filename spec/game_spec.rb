@@ -61,27 +61,62 @@ describe Game do
 end
 
 describe Board do
-  subject(:board) { Board.empty }
+  let(:ui) { double(:user_interface) }
 
-  it 'starts with all cells dead' do
-    expect { |b| board.each_live_cell(&b) }.to_not yield_control
+  context 'when empty' do
+    subject(:board) { Board.empty }
+
+    it 'outputs nothing to the ui' do
+      expect(ui).to_not receive(:draw_cell)
+      board.output(ui)
+    end
+
+    it 'applies no alive rules' do
+      alive_rules = double
+      expect(alive_rules).to_not receive(:apply)
+      board.apply_rules(alive_rules, double(:dead_rules))
+    end
+
+    it 'applies no dead rules' do
+      dead_rules = double
+      expect(dead_rules).to_not receive(:apply)
+      board.apply_rules(double(:alive_rules), dead_rules)
+    end
   end
 
-  it 'allows a single cell to be brought to life' do
-    board.come_alive_at(1, 1)
-    expect { |b| board.each_live_cell(&b) }.to yield_control.exactly(1).times
-  end
+  context 'with one live cell' do
+    subject(:board) { Board.empty.come_alive_at(1, 1) }
 
-  it 'allows a multiple different cells to be brought to life' do
-    board.come_alive_at(1, 1)
-    board.come_alive_at(2, 2)
-    expect { |b| board.each_live_cell(&b) }.to yield_control.exactly(2).times
-  end
+    it 'outputs the cell to the ui' do
+      expect(ui).to receive(:draw_cell).with(1, 1).once
+      board.output(ui)
+    end
 
-  it 'only allows a specific cell to be added once' do
-    board.come_alive_at(1, 1)
-    board.come_alive_at(1, 1)
-    expect { |b| board.each_live_cell(&b) }.to yield_control.exactly(1).times
+    it 'does prevents duplicates of living cells' do
+      board.come_alive_at(1, 1)
+      expect(ui).to receive(:draw_cell).with(1, 1).once
+      board.output(ui)
+    end
+
+    it 'allows new cells to be brought to life' do
+      board.come_alive_at(1, 2)
+      expect(ui).to receive(:draw_cell).twice
+      board.output(ui)
+    end
+
+    it 'applies the alive rules once' do
+      alive_rules = double
+      dead_rules  = double.as_null_object
+      expect(alive_rules).to receive(:apply)
+      board.apply_rules(alive_rules, dead_rules)
+    end
+
+    it 'applies the dead rules all neighbouring cells' do
+      alive_rules = double.as_null_object
+      dead_rules = double
+      expect(dead_rules).to receive(:apply).at_least(:once)
+      board.apply_rules(alive_rules, dead_rules)
+    end
   end
 end
 
