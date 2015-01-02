@@ -69,6 +69,7 @@ class ConwayAliveRules
 
   def apply(x, y, number_of_neighbours)
     @board.come_alive_at(x, y) if (2..3).include?(number_of_neighbours)
+    self
   end
 end
 
@@ -80,6 +81,7 @@ class ConwayDeadRules
 
   def apply(x, y, number_of_neighbours)
     @board.come_alive_at(x, y) if number_of_neighbours == 3
+    self
   end
 end
 
