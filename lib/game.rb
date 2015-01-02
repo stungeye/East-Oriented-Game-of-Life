@@ -28,21 +28,19 @@ class Board
     self
   end
 
+  private
+
   def apply_alive_rules(rules)
     @cells.each do |x, y|
       rules.apply(x, y, alive_neighbour_count(x, y))
     end
-    self
   end
 
   def apply_dead_rules(rules)
     fringe.each do |x, y|
       rules.apply(x, y, alive_neighbour_count(x, y))
     end
-    self
   end
-
-  private
 
   def points_surrounding(x, y)
     [[x - 1, y - 1], [x, y - 1], [x + 1, y - 1],
