@@ -1,29 +1,3 @@
-require 'forwardable'
-
-class Game
-  extend Forwardable
-
-  def initialize(board)
-    @board = board
-    self
-  end
-
-  def_delegator :@board, :come_alive_at
-
-  def apply_rules(alive_rules, dead_rules)
-    @board.apply_alive_rules(alive_rules)
-    @board.apply_dead_rules(dead_rules)
-    self
-  end
-
-  def output(ui)
-    @board.each_live_cell do |x, y|
-      ui.draw_cell(x, y)
-    end
-    self
-  end
-end
-
 class Board
   private_class_method :new
 
@@ -51,13 +25,6 @@ class Board
   def apply_rules(alive_rules, dead_rules)
     apply_alive_rules(alive_rules)
     apply_dead_rules(dead_rules)
-    self
-  end
-
-  def each_live_cell
-    @cells.each do |cell|
-      yield cell
-    end
     self
   end
 
