@@ -1,3 +1,5 @@
+require 'set'
+
 class Board
   private_class_method :new
 
@@ -78,5 +80,31 @@ class ConwayDeadRules
 
   def apply(x, y, number_of_neighbours)
     @board.come_alive_at(x, y) if number_of_neighbours == 3
+  end
+end
+
+class UserInterface2D
+  def initialize(width, height)
+    @width = width
+    @height = height
+    @board = blank_board
+  end
+
+  def draw_cell(x, y)
+    @board[y][x] = 1
+  end
+
+  def print_board
+    @board.each do |row|
+      row.each do |column|
+        print column
+      end
+      puts
+    end
+  end
+
+  private
+  def blank_board
+    Array.new(@height) { Array.new(@width, 0) }
   end
 end
