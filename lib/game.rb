@@ -1,6 +1,6 @@
 require 'set'
 
-class Board
+class World
   private_class_method :new
 
   def self.empty
@@ -62,25 +62,25 @@ class Board
 end
 
 class ConwayAliveRules
-  def initialize(board)
-    @board = board
+  def initialize(world)
+    @world = world
     self
   end
 
   def apply(x, y, number_of_neighbours)
-    @board.come_alive_at(x, y) if (2..3).include?(number_of_neighbours)
+    @world.come_alive_at(x, y) if (2..3).include?(number_of_neighbours)
     self
   end
 end
 
 class ConwayDeadRules
-  def initialize(board)
-    @board = board
+  def initialize(world)
+    @world = world
     self
   end
 
   def apply(x, y, number_of_neighbours)
-    @board.come_alive_at(x, y) if number_of_neighbours == 3
+    @world.come_alive_at(x, y) if number_of_neighbours == 3
     self
   end
 end
@@ -89,15 +89,15 @@ class UserInterface2D
   def initialize(width, height)
     @width = width
     @height = height
-    @board = blank_board
+    @world = blank_world
   end
 
   def draw_cell(x, y)
-    @board[y][x] = 1
+    @world[y][x] = 1
   end
 
-  def print_board
-    @board.each do |row|
+  def print_world
+    @world.each do |row|
       row.each do |column|
         print column
       end
@@ -107,7 +107,8 @@ class UserInterface2D
   end
 
   private
-  def blank_board
+
+  def blank_world
     Array.new(@height) { Array.new(@width, 0) }
   end
 end
