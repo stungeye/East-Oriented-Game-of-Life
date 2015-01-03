@@ -1,5 +1,6 @@
 source 'https://rubygems.org'
 
+gem 'values'
 gem 'rspec'
 gem 'rspec-mocks'
 gem 'rubocop'

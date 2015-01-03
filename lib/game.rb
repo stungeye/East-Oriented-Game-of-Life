@@ -1,4 +1,5 @@
 require 'set'
+require 'values'
 
 class World
   private_class_method :new
@@ -8,18 +9,18 @@ class World
   end
 
   def initialize
-    @cells = Set.new
+    @live_cells = Set.new
     self
   end
 
-  def come_alive_at(x, y)
-    @cells << [x, y]
+  def come_alive_at(coordinate)
+    @live_cells << coordinate
     self
   end
 
   def output(ui)
-    @cells.each do |x, y|
-      ui.draw_cell(x, y)
+    @live_cells.each do |coordinate|
+      ui.draw_cell(coordinate)
     end
     self
   end
@@ -33,31 +34,34 @@ class World
   private
 
   def apply_alive_rules(rules)
-    @cells.each do |x, y|
-      rules.apply(x, y, alive_neighbour_count(x, y))
+    @live_cells.each do |coordinate|
+      rules.apply(coordinate, alive_neighbour_count(coordinate))
     end
   end
 
   def apply_dead_rules(rules)
-    fringe.each do |x, y|
-      rules.apply(x, y, alive_neighbour_count(x, y))
+    fringe.each do |coordinate|
+      rules.apply(coordinate, alive_neighbour_count(coordinate))
     end
   end
 
-  def points_surrounding(x, y)
-    [[x - 1, y - 1], [x, y - 1], [x + 1, y - 1],
-     [x - 1, y    ],             [x + 1, y    ],
-     [x - 1, y + 1], [x, y + 1], [x + 1, y + 1]].to_set
+  def points_surrounding(coordinate)
+    neighbourhood = (-1..1).flat_map do |delta_x|
+      (-1..1).map do |delta_y|
+        Coordinate2D.new(coordinate.x + delta_x, coordinate.y + delta_y)
+      end
+    end
+    neighbourhood.reject { |c| c == coordinate }.to_set
   end
 
   def fringe
-    @cells.inject(Set.new) do |fringe_cells, cell|
-      fringe_cells + points_surrounding(cell[0], cell[1])
-    end - @cells
+    @live_cells.inject(Set.new) do |fringe_cells, coordinate|
+      fringe_cells + points_surrounding(coordinate)
+    end - @live_cells
   end
 
-  def alive_neighbour_count(x, y)
-    points_surrounding(x, y).count { |point| @cells.include? point }
+  def alive_neighbour_count(coordinate)
+    points_surrounding(coordinate).count { |point| @live_cells.include? point }
   end
 end
 
@@ -67,8 +71,8 @@ class ConwayAliveRules
     self
   end
 
-  def apply(x, y, number_of_neighbours)
-    @world.come_alive_at(x, y) if (2..3).include?(number_of_neighbours)
+  def apply(coordinate, number_of_neighbours)
+    @world.come_alive_at(coordinate) if (2..3).include?(number_of_neighbours)
     self
   end
 end
@@ -79,10 +83,13 @@ class ConwayDeadRules
     self
   end
 
-  def apply(x, y, number_of_neighbours)
-    @world.come_alive_at(x, y) if number_of_neighbours == 3
+  def apply(coordinate, number_of_neighbours)
+    @world.come_alive_at(coordinate) if number_of_neighbours == 3
     self
   end
+end
+
+class Coordinate2D < Value.new(:x, :y)
 end
 
 class UserInterface2D
@@ -92,8 +99,8 @@ class UserInterface2D
     @world = blank_world
   end
 
-  def draw_cell(x, y)
-    @world[y][x] = 1
+  def draw_cell(coordinate)
+    @world[coordinate.y][coordinate.x] = 1
   end
 
   def print_world
