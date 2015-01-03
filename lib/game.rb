@@ -40,28 +40,36 @@ class World
   end
 
   def apply_dead_rules(rules)
-    fringe.each do |coordinate|
+    Coordinate2D.each_fringe(@live_cells) do |coordinate|
       rules.apply(coordinate, alive_neighbour_count(coordinate))
     end
   end
 
-  def points_surrounding(coordinate)
+  def alive_neighbour_count(coordinate)
+    coordinate.points_surrounding.count { |point| @live_cells.include? point }
+  end
+end
+
+class Coordinate2D < Value.new(:x, :y)
+  def self.each_fringe(target_coordinates)
+    fringe(target_coordinates).each do |fringe_coordinate|
+      yield fringe_coordinate
+    end
+  end
+
+  def self.fringe(target_coordinates)
+    target_coordinates.inject(Set.new) do |fringe_cells, coordinate|
+      fringe_cells + coordinate.points_surrounding
+    end - target_coordinates
+  end
+
+  def points_surrounding
     neighbourhood = (-1..1).flat_map do |delta_x|
       (-1..1).map do |delta_y|
-        Coordinate2D.new(coordinate.x + delta_x, coordinate.y + delta_y)
+        Coordinate2D.new(self.x + delta_x, self.y + delta_y)
       end
     end
-    neighbourhood.reject { |c| c == coordinate }.to_set
-  end
-
-  def fringe
-    @live_cells.inject(Set.new) do |fringe_cells, coordinate|
-      fringe_cells + points_surrounding(coordinate)
-    end - @live_cells
-  end
-
-  def alive_neighbour_count(coordinate)
-    points_surrounding(coordinate).count { |point| @live_cells.include? point }
+    neighbourhood.reject { |c| c == self }.to_set
   end
 end
 
@@ -89,9 +97,6 @@ class ConwayDeadRules
   end
 end
 
-class Coordinate2D < Value.new(:x, :y)
-end
-
 class UserInterface2D
   def initialize(width, height)
     @width = width
@@ -100,7 +105,7 @@ class UserInterface2D
   end
 
   def draw_cell(coordinate)
-    @world[coordinate.y][coordinate.x] = 1
+    @world[coordinate.y][coordinate.x] = '#'
   end
 
   def print_world
@@ -116,6 +121,21 @@ class UserInterface2D
   private
 
   def blank_world
-    Array.new(@height) { Array.new(@width, 0) }
+    Array.new(@height) { Array.new(@width, '_') }
   end
+end
+
+world = World.empty
+world_coords = [[1, 1], [1, 2], [1, 3], [5, 5], [5, 6], [6, 5], [6, 6]]
+world_coords.each do |x, y|
+  world.come_alive_at(Coordinate2D.new(x, y))
+end
+
+3.times do
+  ui = UserInterface2D.new(10, 10)
+  world.output(ui)
+  ui.print_world
+  new_world = World.empty
+  world.apply_rules(ConwayAliveRules.new(new_world), ConwayDeadRules.new(new_world))
+  world = new_world
 end
