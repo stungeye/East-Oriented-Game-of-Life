@@ -76,6 +76,10 @@ I'm also having a hard time deciding how best to refactor the rules. Currently w
 
 That seems like a lot of ceremony just to generate the next generation board, but I'm not exactly sure how to improve it. One rules class that contains the alive and dead rules? Some sort of rule application Board factory? We'll see. 
 
+*January 3, 2014*
+
+Renamed the Board class to world. I've [tagged this commit](https://github.com/stungeye/East-Oriented-Game-of-Life/tree/reimplementation_complete) as a complete re-implementation of Jason's code. I'm now going to create a branch to attempt the creation of a value object for coordinates.
+
 # (UN)LICENSE
 
 This is free and unencumbered software released into the public domain. See UNLICENSE for details.
