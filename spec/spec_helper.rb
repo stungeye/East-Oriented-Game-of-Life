@@ -1,1 +1,1 @@
-require_relative '../lib/game.rb'
+require_relative '../lib/game_of_life.rb'
