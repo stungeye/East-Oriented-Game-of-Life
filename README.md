@@ -31,12 +31,12 @@ But this felt really awkward, so I switched to using a plain old variable:
       @empty_world.empty?(-> { world_is_empty = true })
       expect(world_is_empty).to be true
     end
-    
+
 Spent a bit too much time thinking about how to hide the World's "dimensionality" from itself. As in, I don't think the world should need to know if it's 1D, 2D or 3D. That information should be hidden inside of Location. The World itself should just know that it has Locations, each of which may contain a live or dead cell. I've finally decided on a new WorldBuilder2D class, that will populate a World with it's locations.
 
 *December 24, 2014*
 
-Took some time to implement a position equality test on `Location#same_position?`. The goal being I was going to add a spec for `World#add_location` to expect identical locations to be added only once. The problem is, I don't know how to test for that without implementing `World#size`, which would break the no returns rule. 
+Took some time to implement a position equality test on `Location#same_position?`. The goal being I was going to add a spec for `World#add_location` to expect identical locations to be added only once. The problem is, I don't know how to test for that without implementing `World#size`, which would break the no returns rule.
 
 It should also be noted that not being able to return simple Booleans, as in the case of `World#empty?` and `Location#same_position?`, is grating. Building with a lambda argument that gets conditionally called feels awkward. In some descriptions of east-oriented coded boolean returns are allowed. Perhaps needing boolean methods is an east-oriented code smell? I'm going to start allowing boolean methods, otherwise I'll be forever mired in chains of conditional callbacks.
 
@@ -74,7 +74,7 @@ I'm also having a hard time deciding how best to refactor the rules. Currently w
     new_board = Board.empty
     existing_board.apply_rules(ConwayAliveRules.new(new_board), ConwayDeadRules.new(new_board))
 
-That seems like a lot of ceremony just to generate the next generation board, but I'm not exactly sure how to improve it. One rules class that contains the alive and dead rules? Some sort of rule application Board factory? We'll see. 
+That seems like a lot of ceremony just to generate the next generation board, but I'm not exactly sure how to improve it. One rules class that contains the alive and dead rules? Some sort of rule application Board factory? We'll see.
 
 *January 3, 2014*
 
@@ -82,15 +82,27 @@ Renamed the Board class to world. I've [tagged this commit](https://github.com/s
 
 The `Coordinate2D` value object was created using the [Values gem](https://github.com/tcrayford/Values). Value objects by their very nature are not eastward, but they do provide a nice place to extract the 2D topology out of the World class. The only method I implemented on `Coordinate2D` was `neighbouring_coordinates` which returns a collection of the object's eight neighbours. I considered this a Factory method, so it is permitted to return data.
 
-I've tried thinking of a way to extract rules appliation out of World, but I couldn't think of a elegant way. In that case, all that is left to do is an integration spec for the Conway rules, breaking the various classes out to their own files, and a few 1D and 2D demos. 
+I've tried thinking of a way to extract rules appliation out of World, but I couldn't think of a elegant way. In that case, all that is left to do is an integration spec for the Conway rules, breaking the various classes out to their own files, and a few 1D and 2D demos.
 
 *Janary 4, 2014*
 
 Separated out classes and specs into their own files. I also created an integration spec for Conway's rules that involved both a static world and a two-phase oscillating world. These test led me to create a new RulesetWorldBuilder class, which is a ruleset based World factory. Take a look at [the Conway demo](https://github.com/stungeye/East-Oriented-Game-of-Life/blob/master/examples/conway_demo.rb) to see how it works.
 
-The only things left to do is to create a few more example using different rules sets and/or different topologies. I think I'll create a 1D coordinate value object so that I can create some 1D demos using Wolfram's rules. Oh and when researching Wolfram's rules I realized that my World will only support half of his 1D rulesets, [the even numbered ones](https://en.wikipedia.org/wiki/Elementary_cellular_automaton#Single_1_histories). This is because the odd numbered Wolfram rules involve bringing cells to life if they have no neighbours. My World assumes that the only dead cells that matter are "fringe" cells, one's that are touching at least one live cell. Without this assumption my World would need to be configured to a specific width and height, but with the Game of Life the world is supposed to be of an infinite size. Oh well, such is life. ;) 
+The only things left to do is to create a few more example using different rules sets and/or different topologies. I think I'll create a 1D coordinate value object so that I can create some 1D demos using Wolfram's rules. Oh and when researching Wolfram's rules I realized that my World will only support half of his 1D rulesets, [the even numbered ones](https://en.wikipedia.org/wiki/Elementary_cellular_automaton#Single_1_histories). This is because the odd numbered Wolfram rules involve bringing cells to life if they have no neighbours. My World assumes that the only dead cells that matter are "fringe" cells, one's that are touching at least one live cell. Without this assumption my World would need to be configured to a specific width and height, but with the Game of Life the world is supposed to be of an infinite size. Oh well, such is life. ;)
 
 Implementing a 1D topology with a Wolfram Rule 90 demo was a snap. One further complication for Wolfram rules is that not just the number of neighbours count but their positions too. So a single left neighbour can lead to a different outcome compared to a single right neighbour. (See [Rule 30](https://en.wikipedia.org/wiki/Rule_30)) One possible fix would have the `#apply` method of rules to take the collection of alive neighbours as an argument, rather than the alive neighbour count. I'll leave that for another day.
+
+A short while later... I fixed the rules class to allow for all even 1D Wolfram rules. I also added a GenericRule class for all rules to inherit from. This way a rule can be implemented as follows:
+
+    class Rule90 < GenericRule
+      protected
+
+      def come_to_life?(coordinate, alive_neighbours)
+        number_of_neighbours == 1
+      end
+    end
+
+I think that's a wrap folks!
 
 # (UN)LICENSE
 
