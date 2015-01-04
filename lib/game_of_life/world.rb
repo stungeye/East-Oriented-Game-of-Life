@@ -24,14 +24,14 @@ class World
 
   def apply_alive_rules(rules)
     @live_cells.each do |coordinate|
-      rules.apply(coordinate, alive_neighbour_count(coordinate))
+      rules.apply(coordinate, alive_neighbours(coordinate))
     end
     self
   end
 
   def apply_dead_rules(rules)
     fringe.each do |coordinate|
-      rules.apply(coordinate, alive_neighbour_count(coordinate))
+      rules.apply(coordinate, alive_neighbours(coordinate))
     end
     self
   end
@@ -44,8 +44,7 @@ class World
     end - @live_cells
   end
 
-  def alive_neighbour_count(coordinate)
-    neighbours = coordinate.neighbouring_coordinates
-    neighbours.count { |point| @live_cells.include? point }
+  def alive_neighbours(coordinate)
+    @live_cells.intersection(coordinate.neighbouring_coordinates)
   end
 end

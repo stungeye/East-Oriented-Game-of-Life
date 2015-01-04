@@ -4,7 +4,8 @@ class ConwayAliveRules
     self
   end
 
-  def apply(coordinate, number_of_neighbours)
+  def apply(coordinate, alive_neighbours)
+    number_of_neighbours = alive_neighbours.count
     @world.come_alive_at(coordinate) if (2..3).include?(number_of_neighbours)
     self
   end
@@ -16,7 +17,8 @@ class ConwayDeadRules
     self
   end
 
-  def apply(coordinate, number_of_neighbours)
+  def apply(coordinate, alive_neighbours)
+    number_of_neighbours = alive_neighbours.count
     @world.come_alive_at(coordinate) if number_of_neighbours == 3
     self
   end
