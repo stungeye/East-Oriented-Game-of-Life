@@ -78,7 +78,11 @@ That seems like a lot of ceremony just to generate the next generation board, bu
 
 *January 3, 2014*
 
-Renamed the Board class to world. I've [tagged this commit](https://github.com/stungeye/East-Oriented-Game-of-Life/tree/reimplementation_complete) as a complete re-implementation of Jason's code. I'm now going to create a branch to attempt the creation of a value object for coordinates.
+Renamed the Board class to world. I've [tagged this commit](https://github.com/stungeye/East-Oriented-Game-of-Life/tree/reimplementation_complete) as a complete re-implementation of Jason's code. I've created [a branch](https://github.com/stungeye/East-Oriented-Game-of-Life/tree/value_object) to attempt the creation of a value object for coordinates.
+
+The `Coordinate2D` value object was created using the [Values gem](https://github.com/tcrayford/Values). Value objects by their very nature are not eastward, but they do provide a nice place to extract the 2D topology out of the World class. The only method I implemented on `Coordinate2D` was `neighbouring_coordinates` which returns a collection of the object's eight neighbours. I considered this a Factory method, so it is permitted to return data.
+
+I've tried thinking of a way to extract rules appliation out of World, but I couldn't think of a elegant way. In that case, all that is left to do is an integration spec for the Conway rules, breaking the various classes out to their own files, and a few 1D and 2D demos. 
 
 # (UN)LICENSE
 
