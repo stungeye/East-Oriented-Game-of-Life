@@ -7,6 +7,10 @@ describe Coordinate2D do
       expect(coordinate2D.neighbouring_coordinates).to_not include(coordinate2D)
     end
 
+    it 'to return exactly 8 neighbours' do
+      expect(coordinate2D.neighbouring_coordinates.count).to eq(8)
+    end
+
     it 'includes the correct neighbours' do
       expect(coordinate2D.neighbouring_coordinates).to include(
         Coordinate2D.new(0, 0), Coordinate2D.new(0, 1), Coordinate2D.new(0, 2),
