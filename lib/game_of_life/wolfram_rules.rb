@@ -1,35 +1,14 @@
-class Rule90Alive
-  def initialize(world)
-    @world = world
-  end
+class Rule90 < GenericRule
+  protected
 
-  def apply(coordinate, alive_neighbours)
+  def come_to_life?(coordinate, alive_neighbours)
     number_of_neighbours = alive_neighbours.count
     @world.come_alive_at(coordinate) if number_of_neighbours == 1
   end
 end
 
-class Rule90Dead
-  def initialize(world)
-    @world = world
-  end
-
-  def apply(coordinate, alive_neighbours)
-    number_of_neighbours = alive_neighbours.count
-    @world.come_alive_at(coordinate) if number_of_neighbours == 1
-  end
-end
-
-class Rule30Alive
-  def initialize(world)
-    @world = world
-  end
-
-  def apply(coordinate, alive_neighbours)
-    @world.come_alive_at(coordinate) if come_to_life?(coordinate, alive_neighbours)
-  end
-
-  private
+class Rule30Alive < GenericRule
+  protected
 
   def come_to_life?(coordinate, alive_neighbours)
     number_of_neighbours = alive_neighbours.count
@@ -39,13 +18,10 @@ class Rule30Alive
   end
 end
 
-class Rule30Dead
-  def initialize(world)
-    @world = world
-  end
+class Rule30Dead < GenericRule
+  protected
 
-  def apply(coordinate, alive_neighbours)
-    number_of_neighbours = alive_neighbours.count
-    @world.come_alive_at(coordinate) if number_of_neighbours == 1
+  def come_to_life?(coordinate, alive_neighbours)
+    alive_neighbours.count == 1
   end
 end

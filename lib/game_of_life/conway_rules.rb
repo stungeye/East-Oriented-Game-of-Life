@@ -1,25 +1,15 @@
-class ConwayAliveRules
-  def initialize(world)
-    @world = world
-    self
-  end
+class ConwayAliveRules < GenericRule
+  protected
 
-  def apply(coordinate, alive_neighbours)
-    number_of_neighbours = alive_neighbours.count
-    @world.come_alive_at(coordinate) if (2..3).include?(number_of_neighbours)
-    self
+  def come_to_life?(coordinate, alive_neighbours)
+    (2..3).include?(alive_neighbours.count)
   end
 end
 
-class ConwayDeadRules
-  def initialize(world)
-    @world = world
-    self
-  end
+class ConwayDeadRules < GenericRule
+  protected 
 
-  def apply(coordinate, alive_neighbours)
-    number_of_neighbours = alive_neighbours.count
-    @world.come_alive_at(coordinate) if number_of_neighbours == 3
-    self
+  def come_to_life?(coordinate, alive_neighbours)
+    alive_neighbours.count == 3
   end
 end

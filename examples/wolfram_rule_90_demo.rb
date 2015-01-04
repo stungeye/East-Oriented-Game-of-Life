@@ -1,6 +1,6 @@
 require_relative '../lib/game_of_life.rb'
 
-ruleset = RulesetWorldBuilder.new(Rule90Alive, Rule90Dead)
+ruleset = RulesetWorldBuilder.new(Rule90, Rule90)
 
 world = World.empty
 world.come_alive_at(Coordinate1D.new(35))
