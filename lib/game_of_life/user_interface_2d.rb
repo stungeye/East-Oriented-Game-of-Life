@@ -28,5 +28,3 @@ class UserInterface2D
     Array.new(@height) { Array.new(@width, '_') }
   end
 end
-
-
