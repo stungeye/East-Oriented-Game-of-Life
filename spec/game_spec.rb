@@ -14,13 +14,13 @@ describe World do
     it 'applies no alive rules' do
       alive_rules = double
       expect(alive_rules).to_not receive(:apply)
-      world.apply_rules(alive_rules, double(:dead_rules))
+      world.apply_alive_rules(alive_rules)
     end
 
     it 'applies no dead rules' do
       dead_rules = double
       expect(dead_rules).to_not receive(:apply)
-      world.apply_rules(double(:alive_rules), dead_rules)
+      world.apply_dead_rules(dead_rules)
     end
   end
 
@@ -47,16 +47,14 @@ describe World do
 
     it 'applies the alive rules once' do
       alive_rules = double
-      dead_rules  = double.as_null_object
       expect(alive_rules).to receive(:apply)
-      world.apply_rules(alive_rules, dead_rules)
+      world.apply_alive_rules(alive_rules)
     end
 
     it 'applies the dead rules all neighbouring cells' do
-      alive_rules = double.as_null_object
       dead_rules = double
       expect(dead_rules).to receive(:apply).at_least(:once)
-      world.apply_rules(alive_rules, dead_rules)
+      world.apply_dead_rules(dead_rules)
     end
   end
 end

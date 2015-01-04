@@ -2,11 +2,11 @@ require 'set'
 require 'values'
 
 class World
-  private_class_method :new
-
   def self.empty
     new
   end
+
+  private_class_method :new
 
   def initialize
     @live_cells = Set.new
@@ -25,25 +25,21 @@ class World
     self
   end
 
-  def apply_rules(alive_rules, dead_rules)
-    apply_alive_rules(alive_rules)
-    apply_dead_rules(dead_rules)
-    self
-  end
-
-  private
-
   def apply_alive_rules(rules)
     @live_cells.each do |coordinate|
       rules.apply(coordinate, alive_neighbour_count(coordinate))
     end
+    self
   end
 
   def apply_dead_rules(rules)
     fringe.each do |coordinate|
       rules.apply(coordinate, alive_neighbour_count(coordinate))
     end
+    self
   end
+
+  private
 
   def fringe
     @live_cells.inject(Set.new) do |fringe_cells, coordinate|
@@ -97,10 +93,12 @@ class UserInterface2D
     @width = width
     @height = height
     @world = blank_world
+    self
   end
 
   def draw_cell(coordinate)
     @world[coordinate.y][coordinate.x] = '#'
+    self
   end
 
   def print_world
@@ -111,6 +109,7 @@ class UserInterface2D
       puts
     end
     puts
+    self
   end
 
   private
@@ -131,6 +130,7 @@ end
   world.output(ui)
   ui.print_world
   new_world = World.empty
-  world.apply_rules(ConwayAliveRules.new(new_world), ConwayDeadRules.new(new_world))
+  world.apply_alive_rules(ConwayAliveRules.new(new_world))
+  world.apply_dead_rules(ConwayDeadRules.new(new_world))
   world = new_world
 end
