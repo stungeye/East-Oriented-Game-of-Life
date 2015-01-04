@@ -40,36 +40,31 @@ class World
   end
 
   def apply_dead_rules(rules)
-    Coordinate2D.each_fringe(@live_cells) do |coordinate|
+    fringe.each do |coordinate|
       rules.apply(coordinate, alive_neighbour_count(coordinate))
     end
   end
 
+  def fringe
+    @live_cells.inject(Set.new) do |fringe_cells, coordinate|
+      fringe_cells + coordinate.neighbouring_coordinates
+    end - @live_cells
+  end
+
   def alive_neighbour_count(coordinate)
-    coordinate.points_surrounding.count { |point| @live_cells.include? point }
+    neighbours = coordinate.neighbouring_coordinates
+    neighbours.count { |point| @live_cells.include? point }
   end
 end
 
 class Coordinate2D < Value.new(:x, :y)
-  def self.each_fringe(target_coordinates)
-    fringe(target_coordinates).each do |fringe_coordinate|
-      yield fringe_coordinate
-    end
-  end
-
-  def self.fringe(target_coordinates)
-    target_coordinates.inject(Set.new) do |fringe_cells, coordinate|
-      fringe_cells + coordinate.points_surrounding
-    end - target_coordinates
-  end
-
-  def points_surrounding
+  def neighbouring_coordinates
     neighbourhood = (-1..1).flat_map do |delta_x|
       (-1..1).map do |delta_y|
         Coordinate2D.new(self.x + delta_x, self.y + delta_y)
       end
     end
-    neighbourhood.reject { |c| c == self }.to_set
+    neighbourhood.reject { |c| c == self }
   end
 end
 
