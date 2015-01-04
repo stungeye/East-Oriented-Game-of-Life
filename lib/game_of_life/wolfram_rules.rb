@@ -2,8 +2,7 @@ class Rule90 < GenericRule
   protected
 
   def come_to_life?(coordinate, alive_neighbours)
-    number_of_neighbours = alive_neighbours.count
-    @world.come_alive_at(coordinate) if number_of_neighbours == 1
+    alive_neighbours.count == 1
   end
 end
 
