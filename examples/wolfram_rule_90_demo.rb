@@ -11,4 +11,3 @@ world.come_alive_at(Coordinate1D.new(35))
   ui.print_world
   world = ruleset.next_world(world)
 end
-
